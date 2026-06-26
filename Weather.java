@@ -36,31 +36,40 @@ public class Weather {
 
     public String getOutdoorReason() {
         if (isGoodForOutdoor()) {
-            return "The weather is good for an outdoor activity.";
+            String message = "The weather is good for an outdoor activity.";
+            return message;
         }
         if (temperature > 25) {
-            return "It is too hot outside. Suggesting an indoor activity...";
+            String message = "It is too hot outside. Suggesting an indoor activity...";
+            return message;
         }
         if (temperature < 19) {
-            return "It is too cold outside. Suggesting an indoor activity...";
+            String message = "It is too cold outside. Suggesting an indoor activity...";
+            return message;
         }
         if (windSpeed > 10) {
-            return "It is windy outside. Suggesting an indoor activity...";
+            String message = "It is too windy outside. Suggesting an indoor activity...";
+            return message;
         }
         if (humidity > 50) {
-            return "It is too humid outside. Suggesting an indoor activity...";
+            String message = "It is too humid outside. Suggesting an indoor activity...";
+            return message;
         }
         if (humidity < 30) {
-            return "The air is too dry outside. Suggesting an indoor activity...";
+            String message = "The air is too dry outside. Suggesting an indoor activity...";
+            return message;
         }
         if (weatherCondition.equalsIgnoreCase("rain")) {
-            return "It is rainy outside. Suggesting an indoor activity...";
+            String message = "It is rainy outside. Suggesting an indoor activity...";
+            return message;
         }
         if (weatherCondition.equalsIgnoreCase("snow")) {
-            return "It is snowy outside. Suggesting an indoor activity...";
+            String message = "It is snowy outside. Suggesting an indoor activity...";
+            return message;
         }
         if (weatherCondition.equalsIgnoreCase("storm")) {
-            return "It is stormy outside. Suggesting an indoor activity...";
+            String message = "It is stormy outside. Suggesting an indoor activity...";
+            return message;
         }
         return "Outdoor activity is not recommended.";
     }
