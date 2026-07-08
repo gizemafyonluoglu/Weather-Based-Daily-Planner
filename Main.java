@@ -72,10 +72,14 @@ public class Main {
             LocalTime start = LocalTime.parse(readString("Start time HH:mm: "));
             LocalTime end = LocalTime.parse(readString("End time HH:mm: "));
 
-            String[] dayParts = daysText.split(",");
+            String[] dayParts = daysText.split("[, ]+");
 
             for (int j = 0; j < dayParts.length; j++) {
                 String oneDayText = dayParts[j].trim().toUpperCase();
+                if (oneDayText.length() == 0) {
+                    continue;
+                }
+
                 DayOfWeek day = DayOfWeek.valueOf(oneDayText);
                 classes.add(new ClassSession(name, day, start, end));
             }
