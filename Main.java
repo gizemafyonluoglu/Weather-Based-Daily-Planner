@@ -140,7 +140,31 @@ public class Main {
         }
 
         if (best == null) {
-            System.out.println("No suitable hobby found.");
+            if (!weather.isGoodForOutdoor() && !hasIndoorHobby()) {
+                System.out.println("You do not have an indoor hobby.");
+                String answer = readString("Do you want to start a new hobby for indoor? yes/no: ");
+
+                if (answer.equalsIgnoreCase("yes")) {
+                    String suggestion = ActivityLibrary.suggestIndoorHobby(hobbies);
+                    System.out.println("Suggested new indoor hobby: " + suggestion);
+                }
+
+                return;
+            }
+
+            if (weather.isGoodForOutdoor() && !hasOutdoorHobby()) {
+                System.out.println("The weather is good for outdoor activities, but you do not have an outdoor hobby.");
+                String answer = readString("Do you want to start a new outdoor hobby? yes/no: ");
+
+                if (answer.equalsIgnoreCase("yes")) {
+                    String suggestion = ActivityLibrary.suggestOutdoorHobby(hobbies);
+                    System.out.println("Suggested new outdoor hobby: " + suggestion);
+                }
+
+                return;
+            }
+
+            System.out.println("No hobby fits your available time.");
             return;
         }
 
@@ -232,5 +256,22 @@ public class Main {
     private static String readString(String message) {
         System.out.print(message);
         return input.nextLine();
+    }
+    private static boolean hasIndoorHobby() {
+        for (int i = 0; i < hobbies.size(); i++) {
+            if (!hobbies.get(i).isOutdoor()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasOutdoorHobby() {
+        for (int i = 0; i < hobbies.size(); i++) {
+            if (hobbies.get(i).isOutdoor()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
