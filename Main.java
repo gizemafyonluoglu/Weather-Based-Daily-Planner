@@ -69,9 +69,6 @@ public class Main {
             String name = readString("Course name: ");
 
             String daysText = readString("Days (example: MONDAY,WEDNESDAY,FRIDAY): ");
-            LocalTime start = LocalTime.parse(readString("Start time HH:mm: "));
-            LocalTime end = LocalTime.parse(readString("End time HH:mm: "));
-
             String[] dayParts = daysText.split("[, ]+");
 
             for (int j = 0; j < dayParts.length; j++) {
@@ -81,6 +78,8 @@ public class Main {
                 }
 
                 DayOfWeek day = DayOfWeek.valueOf(oneDayText);
+                LocalTime start = LocalTime.parse(readString("Start time for " + oneDayText + " HH:mm: "));
+                LocalTime end = LocalTime.parse(readString("End time for " + oneDayText + " HH:mm: "));
                 classes.add(new ClassSession(name, day, start, end));
             }
         }
