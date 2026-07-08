@@ -4,8 +4,7 @@ public class Weather {
     private double windSpeed;
     private double humidity;
 
-    public Weather(double temperature, String weatherCondition,
-                   double windSpeed, double humidity) {
+    public Weather(double temperature, String weatherCondition, double windSpeed, double humidity) {
         this.temperature = temperature;
         this.weatherCondition = weatherCondition;
         this.windSpeed = windSpeed;
@@ -15,12 +14,15 @@ public class Weather {
     public double getTemperature() {
         return temperature;
     }
+
     public String getWeatherCondition() {
         return weatherCondition;
     }
+
     public double getWindSpeed() {
         return windSpeed;
     }
+
     public double getHumidity() {
         return humidity;
     }
@@ -51,40 +53,31 @@ public class Weather {
 
     public String getOutdoorReason() {
         if (isGoodForOutdoor()) {
-            String message = "The weather is good for an outdoor activity.";
-            return message;
+            return "The weather is good for an outdoor activity.";
         }
         if (temperature > 25) {
-            String message = "It is too hot outside. Suggesting an indoor activity...";
-            return message;
+            return "It is too hot outside. Suggesting an indoor activity...";
         }
         if (temperature < 19) {
-            String message = "It is too cold outside. Suggesting an indoor activity...";
-            return message;
+            return "It is too cold outside. Suggesting an indoor activity...";
         }
         if (windSpeed > 10) {
-            String message = "It is too windy outside. Suggesting an indoor activity...";
-            return message;
+            return "It is too windy outside. Suggesting an indoor activity...";
         }
         if (humidity > 50) {
-            String message = "It is too humid outside. Suggesting an indoor activity...";
-            return message;
+            return "It is too humid outside. Suggesting an indoor activity...";
         }
         if (humidity < 30) {
-            String message = "The air is too dry outside. Suggesting an indoor activity...";
-            return message;
+            return "The air is too dry outside. Suggesting an indoor activity...";
         }
         if (isRainy()) {
-            String message = "It is rainy outside. Suggesting an indoor activity...";
-            return message;
+            return "It is rainy outside. Suggesting an indoor activity...";
         }
         if (isSnowy()) {
-            String message = "It is snowy outside. Suggesting an indoor activity...";
-            return message;
+            return "It is snowy outside. Suggesting an indoor activity...";
         }
         if (isStormy()) {
-            String message = "It is stormy outside. Suggesting an indoor activity...";
-            return message;
+            return "It is stormy outside. Suggesting an indoor activity...";
         }
         return "Outdoor activity is not recommended.";
     }
