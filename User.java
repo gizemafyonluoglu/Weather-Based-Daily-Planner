@@ -38,4 +38,15 @@ public class User{
     public String toString() {
         return "User: " + name + "\nHobbies: " + getHobbies() + "\nPreferred Activities: " + getPreferredActivities();
     }
+    public boolean conflictsWithClass(Activity activity, ClassSession[] classsession) {
+        for (ClassSession classSession : classsession) {
+            if (classSession.conflictsWith(
+                    activity.getDate(),
+                    activity.getStartTime(),
+                    activity.getEndTime())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
