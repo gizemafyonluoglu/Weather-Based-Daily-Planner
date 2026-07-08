@@ -25,13 +25,28 @@ public class Weather {
         return humidity;
     }
 
+    public boolean isRainy() {
+        return weatherCondition.equalsIgnoreCase("rain")
+            || weatherCondition.equalsIgnoreCase("rainy");
+    }
+
+    public boolean isSnowy() {
+        return weatherCondition.equalsIgnoreCase("snow")
+            || weatherCondition.equalsIgnoreCase("snowy");
+    }
+
+    public boolean isStormy() {
+        return weatherCondition.equalsIgnoreCase("storm")
+            || weatherCondition.equalsIgnoreCase("stormy");
+    }
+
     public boolean isGoodForOutdoor() {
         return temperature >= 19 && temperature <= 25
             && humidity >= 30 && humidity <= 50
             && windSpeed <= 10
-            && !weatherCondition.equalsIgnoreCase("rain")
-            && !weatherCondition.equalsIgnoreCase("snow")
-            && !weatherCondition.equalsIgnoreCase("storm");
+            && !isRainy()
+            && !isSnowy()
+            && !isStormy();
     }
 
     public String getOutdoorReason() {
@@ -59,15 +74,15 @@ public class Weather {
             String message = "The air is too dry outside. Suggesting an indoor activity...";
             return message;
         }
-        if (weatherCondition.equalsIgnoreCase("rain")) {
+        if (isRainy()) {
             String message = "It is rainy outside. Suggesting an indoor activity...";
             return message;
         }
-        if (weatherCondition.equalsIgnoreCase("snow")) {
+        if (isSnowy()) {
             String message = "It is snowy outside. Suggesting an indoor activity...";
             return message;
         }
-        if (weatherCondition.equalsIgnoreCase("storm")) {
+        if (isStormy()) {
             String message = "It is stormy outside. Suggesting an indoor activity...";
             return message;
         }
