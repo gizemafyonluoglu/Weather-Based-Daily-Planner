@@ -33,6 +33,8 @@ public class Main {
                 markCompleted();
             } else if (choice == 5) {
                 running = false;
+            } else {
+                System.out.println("Invalid choice.");
             }
         }
     }
@@ -41,19 +43,16 @@ public class Main {
         int count = readInt("How many hobbies? ");
 
         for (int i = 0; i < count; i++) {
-            System.out.print("Hobby name: ");
-            String name = input.nextLine();
-
+            String name = readString("Hobby name: ");
             int minutes = readInt("Preferred minutes: ");
             int times = readInt("Target times per week: ");
 
-            System.out.print("Outdoor hobby? yes/no: ");
-            boolean outdoor = input.nextLine().equalsIgnoreCase("yes");
+            String outdoorAnswer = readString("Outdoor hobby? yes/no: ");
+            boolean outdoor = outdoorAnswer.equalsIgnoreCase("yes");
 
             Hobby hobby = new Hobby(name, minutes, times, outdoor);
 
-            System.out.print("Last done date yyyy-mm-dd or never: ");
-            String date = input.nextLine();
+            String date = readString("Last done date yyyy-mm-dd or never: ");
 
             if (!date.equalsIgnoreCase("never")) {
                 hobby.setLastDoneDate(LocalDate.parse(date));
@@ -67,8 +66,7 @@ public class Main {
         int count = readInt("How many class sessions? ");
 
         for (int i = 0; i < count; i++) {
-            System.out.print("Course name: ");
-            String name = input.nextLine();
+            String name = readString("Course name: ");
 
             String daysText = readString("Days (example: MONDAY,WEDNESDAY,FRIDAY): ");
             LocalTime start = LocalTime.parse(readString("Start time HH:mm: "));
@@ -85,8 +83,7 @@ public class Main {
     }
 
     private static void addActivity() {
-        System.out.print("Activity name: ");
-        String name = input.nextLine();
+        String name = readString("Activity name: ");
 
         LocalDate date = LocalDate.parse(readString("Date yyyy-mm-dd: "));
         LocalTime start = LocalTime.parse(readString("Start HH:mm: "));
@@ -106,23 +103,25 @@ public class Main {
         LocalTime start = LocalTime.parse(readString("Free start HH:mm: "));
         LocalTime end = LocalTime.parse(readString("Free end HH:mm: "));
 
-        double temp = readDouble("Temperature: ");
-        String condition = readString("Weather condition: ");
-        double wind = readDouble("Wind speed: ");
-        double humidity = readDouble("Humidity: ");
-
-        Weather weather = new Weather(temp, condition, wind, humidity);
-
         if (hasConflict(date, start, end)) {
             System.out.println("This time is not free.");
             return;
         }
 
+        double[] location = LocationService.getLocationFromInternet();
+        double latitude = location[0];
+        double longitude = location[1];
+
+        Weather weather = WeatherService.getWeatherFromInternet(latitude, longitude);
+        System.out.println(weather);
+
         long freeMinutes = Duration.between(start, end).toMinutes();
         Hobby best = null;
         long longest = -1;
 
-        for (Hobby hobby : hobbies) {
+        for (int i = 0; i < hobbies.size(); i++) {
+            Hobby hobby = hobbies.get(i);
+
             if (hobby.isOutdoor() && !weather.isGoodForOutdoor()) {
                 continue;
             }
@@ -149,9 +148,9 @@ public class Main {
         System.out.println(weather.getOutdoorReason());
         System.out.println("I suggest " + best.getHobbyName() + " from " + start + " to " + suggestedEnd);
 
-        System.out.print("Add it? yes/no: ");
-        if (input.nextLine().equalsIgnoreCase("yes")) {
-            activities.add(new Activity(date, start, suggestedEnd, best.getHobbyName(), "Hobby"));
+        String answer = readString("Add it? yes/no: ");
+        if (answer.equalsIgnoreCase("yes")) {
+            activities.add(new Activity(date, start, suggestedEnd, best.getHobbyName()));
             System.out.println("Added.");
         }
     }
@@ -167,27 +166,35 @@ public class Main {
             Activity activity = activities.get(index);
             activity.setCompleted(true);
 
-            for (Hobby hobby : hobbies) {
+            for (int i = 0; i < hobbies.size(); i++) {
+                Hobby hobby = hobbies.get(i);
+
                 if (hobby.getHobbyName().equalsIgnoreCase(activity.getActivityName())) {
                     hobby.markDone(activity.getDate());
                 }
             }
 
             System.out.println("Marked completed.");
+        } else {
+            System.out.println("Invalid activity number.");
         }
     }
 
     private static boolean hasConflict(LocalDate date, LocalTime start, LocalTime end) {
-        for (ClassSession c : classes) {
-            if (c.conflictsWith(date, start, end)) {
-                System.out.println("Conflict with class: " + c.getCourseName());
+        for (int i = 0; i < classes.size(); i++) {
+            ClassSession classSession = classes.get(i);
+
+            if (classSession.conflictsWith(date, start, end)) {
+                System.out.println("Conflict with class: " + classSession.getCourseName());
                 return true;
             }
         }
 
-        for (Activity a : activities) {
-            if (a.conflictsWith(date, start, end)) {
-                System.out.println("Conflict with activity: " + a.getActivityName());
+        for (int i = 0; i < activities.size(); i++) {
+            Activity activity = activities.get(i);
+
+            if (activity.conflictsWith(date, start, end)) {
+                System.out.println("Conflict with activity: " + activity.getActivityName());
                 return true;
             }
         }
@@ -197,14 +204,14 @@ public class Main {
 
     private static void showCalendar() {
         System.out.println("\nClasses:");
-        for (ClassSession c : classes) {
-            System.out.println(c);
+        for (int i = 0; i < classes.size(); i++) {
+            System.out.println(classes.get(i));
             System.out.println();
         }
 
         System.out.println("Activities:");
-        for (Activity a : activities) {
-            System.out.println(a);
+        for (int i = 0; i < activities.size(); i++) {
+            System.out.println(activities.get(i));
             System.out.println();
         }
     }
