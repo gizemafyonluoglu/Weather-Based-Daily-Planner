@@ -70,11 +70,17 @@ public class Main {
             System.out.print("Course name: ");
             String name = input.nextLine();
 
-            DayOfWeek day = DayOfWeek.valueOf(readString("Day: ").toUpperCase());
+            String daysText = readString("Days (example: MONDAY,WEDNESDAY,FRIDAY): ");
             LocalTime start = LocalTime.parse(readString("Start time HH:mm: "));
             LocalTime end = LocalTime.parse(readString("End time HH:mm: "));
 
-            classes.add(new ClassSession(name, day, start, end));
+            String[] dayParts = daysText.split(",");
+
+            for (int j = 0; j < dayParts.length; j++) {
+                String oneDayText = dayParts[j].trim().toUpperCase();
+                DayOfWeek day = DayOfWeek.valueOf(oneDayText);
+                classes.add(new ClassSession(name, day, start, end));
+            }
         }
     }
 
